@@ -24,21 +24,21 @@ const Toolbar: React.FC<ToolbarProps> = ({
           onClick={() => onViewModeChange('split')}
           title="Split View"
         >
-          ⊞ Split
-        </button>
-        <button
-          className={`view-btn ${viewMode === 'records' ? 'active' : ''}`}
-          onClick={() => onViewModeChange('records')}
-          title="Records Only"
-        >
-          📊 Records
+          ⇆
         </button>
         <button
           className={`view-btn ${viewMode === 'schema' ? 'active' : ''}`}
           onClick={() => onViewModeChange('schema')}
           title="Schema Only"
         >
-          📋 Schema
+          📋
+        </button>
+        <button
+          className={`view-btn ${viewMode === 'records' ? 'active' : ''}`}
+          onClick={() => onViewModeChange('records')}
+          title="Records Only"
+        >
+          📊
         </button>
       </div>
 

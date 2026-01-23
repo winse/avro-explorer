@@ -2,96 +2,133 @@
 
 .tabulator {
   border: none !important;
-  background-color: transparent !important;
-  font-family: var(--vscode-font-family) !important;
+  background-color: var(--vscode-bg) !important;
+  font-family: var(--vscode-font) !important;
   font-size: 13px !important;
 }
 
 .tabulator-header {
-  background-color: var(--vscode-editorGroupHeader-background) !important;
-  border-bottom: 2px solid var(--vscode-border) !important;
-  color: var(--vscode-foreground) !important;
+  background-color: var(--vscode-header-bg) !important;
+  border-bottom: 1px solid var(--vscode-border) !important;
+  color: var(--vscode-fg) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
 }
 
 .tabulator-header .tabulator-col {
-  background-color: var(--vscode-editorGroupHeader-background) !important;
-  border-right: 1px solid var(--vscode-border) !important;
+  background-color: var(--vscode-header-bg) !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.1) !important;
   position: relative;
 }
 
 .tabulator-col-resize-handle {
-  width: 6px !important;
-  right: -3px !important;
+  width: 4px !important;
+  right: -2px !important;
   background: transparent !important;
   z-index: 10;
 }
 
 .tabulator-col-resize-handle:hover {
   background: var(--vscode-selection) !important;
-  opacity: 0.5;
 }
 
 .tabulator-header .tabulator-col-content {
-  padding: 12px 16px !important;
+  padding: 10px 12px !important;
+}
+
+.tabulator-header .tabulator-col-title {
+  font-size: 11px !important;
+  opacity: 0.8 !important;
 }
 
 .tabulator-row {
-  background-color: var(--vscode-editor-background) !important;
-  color: var(--vscode-foreground) !important;
-  border-bottom: 1px solid var(--vscode-editorWidget-border) !important;
+  background-color: var(--vscode-bg) !important;
+  color: var(--vscode-fg) !important;
+  border-bottom: 1px solid var(--vscode-border) !important;
+  transition: background-color 0.1s ease !important;
+  min-height: 30px !important;
+  height: auto !important;
 }
 
 .tabulator-row:nth-child(even) {
-  background-color: rgba(128, 128, 128, 0.06) !important;
+  background-color: rgb(47 47 47 / 80%) !important;
 }
 
 .tabulator-row:hover {
-  background-color: rgba(0, 120, 212, 0.12) !important;
+  background-color: var(--vscode-hover) !important;
+  filter: none;
 }
 
 .tabulator-row.tabulator-selected {
-  background-color: rgba(0, 120, 212, 0.2) !important;
+  background-color: var(--vscode-selection) !important;
+}
+
+.tabulator-row.tabulator-selected .tabulator-cell {
+  color: var(--vscode-selection-fg, #ffffff) !important;
 }
 
 .tabulator-cell {
-  padding: 10px 16px !important;
-  border-right: 1px solid var(--vscode-editorWidget-border) !important;
+  padding: 8px 12px !important;
+  border-right: 1px solid rgba(128, 128, 128, 0.05) !important;
+  vertical-align: middle !important;
 }
 
 .tabulator-footer {
-  background-color: var(--vscode-editorGroupHeader-background) !important;
+  background-color: var(--vscode-header-bg) !important;
   border-top: 1px solid var(--vscode-border) !important;
-  color: var(--vscode-foreground) !important;
+  color: var(--vscode-fg) !important;
+  padding: 8px !important;
 }
 
 .tabulator-paginator {
-  color: var(--vscode-foreground) !important;
-}
-
-.tabulator-page {
-  background-color: var(--vscode-button-background) !important;
-  color: var(--vscode-button-foreground) !important;
-  border: none !important;
-  padding: 6px 12px !important;
-  margin: 0 4px !important;
-  border-radius: 4px !important;
-}
-
-.tabulator-page.active {
-  background-color: var(--vscode-selectionBackground) !important;
-}
-
-.tabulator-header-filter input {
-  background-color: var(--vscode-input-background) !important;
-  color: var(--vscode-input-foreground) !important;
-  border: 1px solid var(--vscode-input-border) !important;
-  border-radius: 4px !important;
-  padding: 6px 10px !important;
+  color: var(--vscode-fg) !important;
   font-size: 12px !important;
 }
 
+.tabulator-page {
+  background-color: rgba(128, 128, 128, 0.1) !important;
+  color: var(--vscode-fg) !important;
+  border: 1px solid transparent !important;
+  padding: 4px 10px !important;
+  margin: 0 2px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s !important;
+}
+
+.tabulator-page:hover:not(.disabled) {
+  background-color: var(--vscode-selection) !important;
+  color: var(--vscode-selection-fg) !important;
+}
+
+.tabulator-page.active {
+  background-color: var(--vscode-selection) !important;
+  color: var(--vscode-selection-fg) !important;
+}
+
+.tabulator-header-filter {
+  margin-top: 4px !important;
+}
+
+.tabulator-header-filter input {
+  background-color: rgba(128, 128, 128, 0.05) !important;
+  color: var(--vscode-fg) !important;
+  border: 1px solid rgba(128, 128, 128, 0.1) !important;
+  border-radius: 3px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  transition: all 0.2s !important;
+}
+
+.tabulator-header-filter input:focus {
+  background-color: var(--vscode-input-bg) !important;
+  border-color: var(--vscode-selection) !important;
+  outline: none !important;
+}
+
 .tabulator-header-filter input::placeholder {
-  color: var(--vscode-placeholderForeground) !important;
+  color: var(--vscode-fg) !important;
+  opacity: 0.3 !important;
 }
 
 .records-table {
@@ -113,47 +150,69 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: var(--vscode-editorGroupHeader-background);
+  padding: 8px 16px;
+  background-color: var(--vscode-header-bg);
   border-bottom: 1px solid var(--vscode-border);
 }
 
 .table-header h2 {
   margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--vscode-foreground);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--vscode-fg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .table-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .filter-select {
-  padding: 6px 10px;
-  background-color: var(--vscode-input-background);
-  color: var(--vscode-input-foreground);
-  border: 1px solid var(--vscode-input-border);
+  padding: 4px 8px;
+  background-color: rgba(128, 128, 128, 0.05);
+  color: var(--vscode-fg);
+  border: 1px solid rgba(128, 128, 128, 0.1);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-select:hover {
+  background-color: rgba(128, 128, 128, 0.1);
+  border-color: rgba(128, 128, 128, 0.2);
 }
 
 .search-input {
-  padding: 6px 10px;
-  background-color: var(--vscode-input-background);
-  color: var(--vscode-input-foreground);
-  border: 1px solid var(--vscode-input-border);
+  padding: 4px 10px;
+  background-color: rgba(128, 128, 128, 0.05);
+  color: var(--vscode-fg);
+  border: 1px solid rgba(128, 128, 128, 0.1);
   border-radius: 4px;
-  font-size: 12px;
-  width: 200px;
+  font-size: 11px;
+  width: 180px;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  background-color: var(--vscode-input-bg);
+  border-color: var(--vscode-selection);
+  width: 240px;
+  outline: none;
 }
 
 .record-count {
-  font-size: 12px;
-  color: var(--vscode-descriptionForeground);
-  margin-left: 8px;
+  font-size: 11px;
+  color: var(--vscode-fg);
+  opacity: 0.4;
+  font-style: italic;
 }
 
 .record-count.filtered {

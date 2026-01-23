@@ -3,7 +3,7 @@
 .schema-viewer {
   background-color: var(--vscode-bg);
   border: 1px solid var(--vscode-border);
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
   flex: 1;
   display: flex;

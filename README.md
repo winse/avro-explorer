@@ -1,10 +1,12 @@
 # avro-viewer README
+
 This is a vscode extension that allows you to preview `.avro` files.
 You can see not just records but also a schema in one time.
 
 This can only handle .avro files with no compress (can't do with deflate/snappy compress).
 
 ## How to use
+
 1. Open `.avro` file and click `Open Avro` button at the right top corner.
 <p>
 <img src='./images/pets.avro.png'/>
