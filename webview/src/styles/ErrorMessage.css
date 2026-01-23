@@ -1,0 +1,43 @@
+@import './Variables.css';
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  padding: 32px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.error-container h3 {
+  margin: 0 0 8px 0;
+  color: var(--vscode-errorForeground);
+}
+
+.error-message {
+  margin: 0 0 24px 0;
+  color: var(--vscode-descriptionForeground);
+  max-width: 400px;
+  word-break: break-word;
+}
+
+.retry-btn {
+  padding: 10px 20px;
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: opacity 0.2s;
+}
+
+.retry-btn:hover {
+  opacity: 0.8;
+}

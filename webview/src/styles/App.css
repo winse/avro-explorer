@@ -1,0 +1,100 @@
+@import './Variables.css';
+
+.avro-viewer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--vscode-bg);
+  color: var(--vscode-fg);
+  font-family: var(--vscode-font);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.content.split {
+  flex-direction: row;
+}
+
+.content.records {
+  flex-direction: row;
+}
+
+.content.schema {
+  flex-direction: row;
+}
+
+.schema-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.records-panel {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.resizer {
+  width: 6px;
+  cursor: col-resize;
+  background-color: transparent;
+  transition: all 0.2s;
+  z-index: 10;
+  position: relative;
+}
+
+.resizer:hover,
+.avro-viewer.resizing .resizer {
+  background-color: var(--vscode-selection);
+}
+
+.resizer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background-color: var(--vscode-border);
+  transition: all 0.2s;
+}
+
+.resizer:hover::before,
+.avro-viewer.resizing .resizer::before {
+  width: 4px;
+  background-color: var(--vscode-selection);
+}
+
+.avro-viewer.resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.content.records .records-panel,
+.content.schema .schema-panel {
+  flex: 1;
+  border-right: none;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .schema-panel,
+  .records-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--vscode-border);
+    height: 50vh;
+  }
+
+  .records-panel:last-child {
+    border-bottom: none;
+  }
+}
