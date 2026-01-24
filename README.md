@@ -1,19 +1,63 @@
-# avro-viewer README
+# Avro Explorer
 
-This is a vscode extension that allows you to preview `.avro` files.
-You can see not just records but also a schema in one time.
+A professional VSCode extension for viewing and exploring Avro files with an interactive interface.
 
-This can only handle .avro files with no compress (can't do with deflate/snappy compress).
+![Avro Explorer](images/logo.svg)
 
-## How to use
+## Features
 
-1. Open `.avro` file and click `Open Avro` button at the right top corner.
-<p>
-<img src='./images/pets.avro.png'/>
-</p>
+- 📊 **Interactive Data Table** - Sort, filter, and search through Avro records with Tabulator
+- 📋 **Schema Display** - View Avro schema with syntax highlighting (Prism.js)
+- ↔️ **Split View** - Compare schema and records side by side
+- 💾 **Export** - Export data to CSV or JSON files
+- 🎨 **Theme Aware** - Automatically adapts to VSCode light/dark themes
+- ⚡ **Fast Loading** - Uses esbuild for optimized bundling
 
-1. See the new tabs of the records and schema of the `.avro` file.
-<p>
-<img src='./images/pets.avro.records.png' width='50%'/>
-<img src='./images/pets.avro.schema.png' width='50%'/>
-</p>
+## Getting Started
+
+### Quick Start
+Just double-click any `.avro` file to open it in Avro Explorer, or right-click and select "Open in Avro Explorer".
+
+### View Modes
+- **Split View** (⇆) - See schema and records side by side
+- **Schema Only** (📋) - Focus on the Avro schema definition
+- **Records Only** (📊) - Full-screen data table view
+
+### Export Data
+Click the export buttons to save records as:
+- **CSV** - Comma-separated values for spreadsheet applications
+- **JSON** - Full JSON data with indentation
+
+## Requirements
+
+- VSCode 1.78.0 or higher
+- Uncompressed Avro files (deflate/snappy compression not supported)
+
+## Installation
+
+1. Open VSCode
+2. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
+3. Type `Extensions: Install from VSIX`
+4. Select the `.vsix` file
+
+Or publish to VSCode Marketplace.
+
+## Building
+
+```bash
+# Install dependencies
+npm install
+
+# Compile and bundle
+npm run compile
+
+# Watch mode for development
+npm run watch
+
+# Production build
+npm run package
+```
+
+## License
+
+Apache License 2.0

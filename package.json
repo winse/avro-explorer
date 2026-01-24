@@ -1,10 +1,10 @@
 {
-  "name": "avro-viewer",
+  "name": "avro-explorer",
   "publisher": "winse",
-  "displayName": "Avro Viewer",
-  "description": "View and analyze Avro files directly in VSCode",
+  "displayName": "Avro Explorer",
+  "description": "Professional Avro file viewer with interactive data table, schema display, and export capabilities. Double-click to open .avro files directly.",
   "icon": "images/logo.svg",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -12,33 +12,37 @@
     "Other"
   ],
   "keywords": [
-    "avro"
+    "avro",
+    "explorer",
+    "viewer",
+    "data",
+    "schema"
   ],
   "activationEvents": [
-    "onCustomEditor:avro-viewer.avroEditor",
-    "onCommand:avro-viewer.open"
+    "onCustomEditor:avro-explorer.avroEditor",
+    "onCommand:avro-explorer.open"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "avro-viewer.open",
-        "title": "Open Avro"
+        "command": "avro-explorer.open",
+        "title": "Open in Avro Explorer"
       }
     ],
     "menus": {
       "editor/title": [
         {
           "when": "resourceExtname == .avro",
-          "command": "avro-viewer.open",
+          "command": "avro-explorer.open",
           "group": "navigation"
         }
       ]
     },
     "customEditors": [
       {
-        "viewType": "avro-viewer.avroEditor",
-        "displayName": "Avro Viewer",
+        "viewType": "avro-explorer.avroEditor",
+        "displayName": "Avro Explorer",
         "selector": [
           {
             "filenamePattern": "*.avro"
@@ -93,15 +97,12 @@
     "typescript": "^5.0.4"
   },
   "repository": {
-    "url": "git+https://github.com/yasunari89/avro-viewer.git"
+    "url": "git+https://github.com/winse/avro-explorer.git"
   },
   "license": "SEE LICENSE IN LICENSE.txt",
-  "author": "Yasunari Ota (https://github.com/yasunari89/)",
-  "directories": {
-    "test": "test"
-  },
+  "author": "winse (https://github.com/winse)",
   "bugs": {
-    "url": "https://github.com/yasunari89/avro-viewer/issues"
+    "url": "https://github.com/winse/avro-explorer/issues"
   },
-  "homepage": "https://github.com/yasunari89/avro-viewer#readme"
+  "homepage": "https://github.com/winse/avro-explorer#readme"
 }
