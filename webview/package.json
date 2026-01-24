@@ -1,6 +1,6 @@
 {
-  "name": "avro-viewer-webview",
-  "version": "0.1.0",
+  "name": "avro-explorer-webview",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
