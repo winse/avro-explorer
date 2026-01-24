@@ -88,6 +88,11 @@ const RecordsTable: React.FC<RecordsTableProps> = ({
       tabulatorRef.current.on('rowContext', (_e: UIEvent, row: any) => {
         const data = row.getData();
         navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+        window.vscode?.postMessage({
+          type: 'showNotification',
+          message: 'Row data copied to clipboard',
+          level: 'info',
+        });
       });
     }
 

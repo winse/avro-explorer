@@ -8,6 +8,7 @@ export interface MessageHandlerContext {
 
 export class MessageHandler {
   public handle(message: any, context: MessageHandlerContext): void {
+    console.log('MessageHandler received:', message.type, message);
     const { type, data } = message;
 
     switch (type) {
@@ -23,8 +24,26 @@ export class MessageHandler {
       case 'copyToClipboard':
         this.copyToClipboard(data, context);
         break;
+      case 'showNotification':
+        this.showNotification(message, context);
+        break;
       default:
-        console.log('Unknown message type:', type);
+        console.log('Unknown message type:', type, message);
+    }
+  }
+
+  private showNotification(message: any, context: MessageHandlerContext): void {
+    const { message: notificationMessage, level } = message;
+    console.log('showNotification called:', notificationMessage, level);
+    switch (level) {
+      case 'error':
+        vscode.window.showErrorMessage(notificationMessage);
+        break;
+      case 'warning':
+        vscode.window.showWarningMessage(notificationMessage);
+        break;
+      default:
+        vscode.window.showInformationMessage(notificationMessage);
     }
   }
 
@@ -63,6 +82,7 @@ export class MessageHandler {
     context: MessageHandlerContext
   ): Promise<void> {
     try {
+      console.log('Exporting CSV:', data.length, 'records');
       const csv = this.convertToCSV(data);
       const uri = vscode.Uri.parse(`avro-viewer:export.csv`);
       await vscode.workspace.fs.writeFile(uri, Buffer.from(csv));
@@ -73,6 +93,7 @@ export class MessageHandler {
         message: 'CSV exported successfully',
       });
     } catch (error: any) {
+      console.error('CSV export error:', error);
       context.panel.webview.postMessage({
         type: 'exportError',
         format: 'CSV',
@@ -86,6 +107,7 @@ export class MessageHandler {
     context: MessageHandlerContext
   ): Promise<void> {
     try {
+      console.log('Exporting JSON:', data.length, 'records');
       const json = JSON.stringify(data, null, 2);
       const uri = vscode.Uri.parse(`avro-viewer:export.json`);
       await vscode.workspace.fs.writeFile(uri, Buffer.from(json));
@@ -96,6 +118,7 @@ export class MessageHandler {
         message: 'JSON exported successfully',
       });
     } catch (error: any) {
+      console.error('JSON export error:', error);
       context.panel.webview.postMessage({
         type: 'exportError',
         format: 'JSON',

@@ -32,7 +32,7 @@
 }
 
 .view-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: color-mix(in srgb, var(--vscode-fg) 8%, var(--vscode-bg)) !important;
 }
 
 .view-btn.active {

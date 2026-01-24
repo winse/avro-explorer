@@ -54,11 +54,17 @@
   padding: 16px;
   overflow-x: auto;
   overflow-y: auto;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  font-size: 13px;
+  font-family: var(--vscode-editor-font-family, 'Monaco', 'Menlo', 'Ubuntu Mono', monospace);
+  font-size: var(--vscode-editor-font-size, 13px);
   line-height: 1.5;
   flex: 1;
   min-height: 0;
+  background-color: var(--vscode-bg) !important;
+}
+
+.schema-content code {
+  background-color: transparent !important;
+  color: inherit !important;
 }
 
 .schema-info {

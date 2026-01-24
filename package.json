@@ -1,8 +1,8 @@
 {
   "name": "avro-viewer",
-  "publisher": "yasunari89",
-  "displayName": "avro-viewer",
-  "description": "This is a vscode extension that allows you to preview .avro files.",
+  "publisher": "winse",
+  "displayName": "Avro Viewer",
+  "description": "View and analyze Avro files directly in VSCode",
   "icon": "images/icon.jpg",
   "version": "0.2.0",
   "engines": {
@@ -15,8 +15,8 @@
     "avro"
   ],
   "activationEvents": [
-    "onCommand:avro-viewer.open",
-    "onStartupFinished"
+    "onCustomEditor:avro-viewer.avroEditor",
+    "onCommand:avro-viewer.open"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -34,7 +34,18 @@
           "group": "navigation"
         }
       ]
-    }
+    },
+    "customEditors": [
+      {
+        "viewType": "avro-viewer.avroEditor",
+        "displayName": "Avro Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.avro"
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "compile": "npm run check-types && node esbuild.config.js",
@@ -47,11 +58,11 @@
     "test": "npm run lint && node ./test/runTest.js"
   },
   "dependencies": {
-    "avsc": "^5.7.7",
-    "prismjs": "^1.29.0",
+    "avsc": "^5.7.9",
+    "prismjs": "^1.30.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tabulator-tables": "^5.5.0"
+    "tabulator-tables": "^6.3.1"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",

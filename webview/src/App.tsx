@@ -79,6 +79,7 @@ const App: React.FC = () => {
   const handleExport = useCallback(
     (format: 'CSV' | 'JSON') => {
       const data = viewMode === 'records' ? filteredRecords : records;
+      console.log('Export clicked:', format, 'data count:', data.length);
       window.vscode?.postMessage({
         type: `export${format}`,
         data,

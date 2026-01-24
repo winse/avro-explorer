@@ -14,6 +14,9 @@ export class WebviewManager {
     this.avroProcessor = new AvroProcessor();
   }
 
+  /**
+   * Create or show panel via command (legacy method)
+   */
   public createOrShow(filePath: string): void {
     const fileName = path.basename(filePath);
 
@@ -24,6 +27,53 @@ export class WebviewManager {
     } else {
       this.createPanel(filePath, fileName);
     }
+  }
+
+  /**
+   * Create or show panel for custom editor
+   */
+  public createOrShowWithPanel(filePath: string, panel: vscode.WebviewPanel): void {
+    this.panel = panel;
+    const fileName = path.basename(filePath);
+
+    this.panel.title = fileName;
+    this.panel.webview.options = {
+      enableScripts: true,
+      localResourceRoots: [
+        vscode.Uri.joinPath(this.context.extensionUri, 'dist'),
+      ],
+    };
+
+    const scriptUri = this.panel.webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'webview.js')
+    );
+    const styleUri = this.panel.webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'webview.css')
+    );
+
+    this.panel.webview.html = this.getHtmlContent(scriptUri, styleUri);
+
+    this.panel.onDidDispose(
+      () => {
+        this.panel = undefined;
+      },
+      undefined,
+      this.context.subscriptions
+    );
+
+    const context: MessageHandlerContext = {
+      panel: this.panel,
+      extensionUri: this.context.extensionUri,
+      filePath,
+    };
+
+    this.panel.webview.onDidReceiveMessage(
+      (message) => this.messageHandler.handle(message, context),
+      undefined,
+      this.context.subscriptions
+    );
+
+    this.loadFile(filePath);
   }
 
   private createPanel(filePath: string, fileName: string): void {
@@ -60,7 +110,7 @@ export class WebviewManager {
     const context: MessageHandlerContext = {
       panel: this.panel,
       extensionUri: this.context.extensionUri,
-      filePath: filePath,  // 保存文件路径
+      filePath: filePath,
     };
 
     this.panel.webview.onDidReceiveMessage(
