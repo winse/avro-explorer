@@ -95,7 +95,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className={`avro-viewer ${isResizing ? 'resizing' : ''}`}>
+    <div className={`avro-explorer ${isResizing ? 'resizing' : ''}`}>
       <Toolbar
         viewMode={viewMode}
         onViewModeChange={setViewMode}

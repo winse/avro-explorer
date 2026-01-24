@@ -5,7 +5,7 @@ export function registerOpenAvroViewerCommand(
   context: vscode.ExtensionContext,
   webviewManager: WebviewManager
 ): vscode.Disposable {
-  return vscode.commands.registerCommand('avro-viewer.open', async () => {
+  return vscode.commands.registerCommand('avro-explorer.open', async () => {
     const avroPath = await getActiveAvroFilePath();
     if (!avroPath) {
       vscode.window.showErrorMessage('No Avro file selected');

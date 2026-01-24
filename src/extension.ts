@@ -5,7 +5,7 @@ import { MessageHandler } from './webview/messageHandler';
 import { registerAvroEditor } from './webview/AvroEditorProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('✅ avro-viewer extension is now active');
+  console.log('✅ avro-explorer extension is now active');
 
   const messageHandler = new MessageHandler();
   const webviewManager = new WebviewManager(context, messageHandler);
@@ -23,5 +23,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  console.log('❌ avro-viewer extension is now deactivated');
+  console.log('❌ avro-explorer extension is now deactivated');
 }

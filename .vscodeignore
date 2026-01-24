@@ -17,8 +17,7 @@
 jsconfig.json
 
 # Build output (re-generated during build)
-dist/
-webview/dist/
+# dist/ - Included! Required for extension to work
 
 # Dependencies (bundled by esbuild)
 node_modules/
@@ -56,3 +55,13 @@ coverage/
 *.tmp
 *.temp
 temp/
+
+nul
+images/ui.png
+images/logo.svg
+samples/
+esbuild.config.js
+tsconfig.json
+tsconfig.eslint.json
+webview/tsconfig.json
+webview/vite.config.js

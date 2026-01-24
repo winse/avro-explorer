@@ -1,5 +1,5 @@
 export class Logger {
-  private static prefix = '[avro-viewer]';
+  private static prefix = '[avro-explorer]';
 
   static info(message: string, ...args: any[]): void {
     console.log(`${this.prefix} INFO: ${message}`, ...args);

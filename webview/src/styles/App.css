@@ -1,6 +1,6 @@
 @import './Variables.css';
 
-.avro-viewer {
+.avro-explorer {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@
 }
 
 .resizer:hover,
-.avro-viewer.resizing .resizer {
+.avro-explorer.resizing .resizer {
   background-color: var(--vscode-selection);
 }
 
@@ -66,12 +66,12 @@
 }
 
 .resizer:hover::before,
-.avro-viewer.resizing .resizer::before {
+.avro-explorer.resizing .resizer::before {
   width: 4px;
   background-color: var(--vscode-selection);
 }
 
-.avro-viewer.resizing {
+.avro-explorer.resizing {
   cursor: col-resize;
   user-select: none;
 }

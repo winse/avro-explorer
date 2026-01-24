@@ -15,6 +15,14 @@
 
 ---
 
+## 📸 UI Preview
+
+![Avro Explorer Interface](images/ui.png)
+
+A powerful Avro file viewer with interactive data table, schema display, and flexible view modes.
+
+---
+
 ## ✨ Features
 
 ### 📊 Interactive Data Table

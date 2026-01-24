@@ -57,6 +57,8 @@
     "watch:esbuild": "node esbuild.config.js --watch",
     "watch:tsc": "tsc --noEmit --watch",
     "package": "npm run check-types && node esbuild.config.js --production",
+    "pkg": "vsce package",
+    "publish": "vsce publish",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "npm run lint && node ./test/runTest.js"
   },

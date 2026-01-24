@@ -5,7 +5,7 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
   constructor(
     private readonly context: vscode.ExtensionContext,
     private readonly webviewManager: WebviewManager
-  ) {}
+  ) { }
 
   async openCustomEditor(
     document: vscode.TextDocument,
@@ -34,19 +34,19 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
     console.log('openCustomDocument called:', uri.fsPath);
     return {
       uri,
-      dispose: () => {},
+      dispose: () => { },
     };
   }
 
   async saveCustomEditor(
     _document: vscode.CustomDocument,
     _cancellationToken: vscode.CancellationToken
-  ): Promise<void> {}
+  ): Promise<void> { }
 
   async revertCustomEditor(
     _document: vscode.CustomDocument,
     _cancellationToken: vscode.CancellationToken
-  ): Promise<void> {}
+  ): Promise<void> { }
 
   async backupCustomEditor(
     document: vscode.CustomDocument,
@@ -55,7 +55,7 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
   ): Promise<vscode.CustomDocumentBackup> {
     return {
       id: document.uri.fsPath,
-      delete: () => {},
+      delete: () => { },
     };
   }
 }
@@ -67,7 +67,7 @@ export function registerAvroEditor(
   const provider = new AvroEditorProvider(context, webviewManager);
 
   return vscode.window.registerCustomEditorProvider(
-    'avro-viewer.avroEditor',
+    'avro-explorer.avroEditor',
     provider,
     {
       webviewOptions: {
