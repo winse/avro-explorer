@@ -57,6 +57,12 @@ export class MessageHandler {
       return;
     }
 
+    // Check if we have cached data in WebviewManager's dataCache
+    // Since we can't access the cache directly, we rely on the cache being sent
+    // when the panel is created or restored
+    console.log('getData received for:', context.filePath);
+
+    // If no cached data, reload the file
     try {
       const avroProcessor = new (require('./AvroProcessor').AvroProcessor)();
       const { schema, records } = await avroProcessor.processFile(context.filePath);

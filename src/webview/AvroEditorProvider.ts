@@ -11,6 +11,7 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
     document: vscode.TextDocument,
     webviewPanel: vscode.WebviewPanel
   ): Promise<void> {
+    console.log('openCustomEditor called:', document.uri.fsPath);
     const filePath = document.uri.fsPath;
     await this.webviewManager.createOrShowWithPanel(filePath, webviewPanel);
   }
@@ -20,6 +21,7 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
     webviewPanel: vscode.WebviewPanel,
     _token: vscode.CancellationToken
   ): Promise<void> {
+    console.log('resolveCustomEditor called:', document.uri.fsPath);
     const filePath = document.uri.fsPath;
     await this.webviewManager.createOrShowWithPanel(filePath, webviewPanel);
   }
@@ -29,6 +31,7 @@ export class AvroEditorProvider implements vscode.CustomReadonlyEditorProvider<v
     _openContext: { backupId?: string | undefined },
     _token: vscode.CancellationToken
   ): Promise<vscode.CustomDocument> {
+    console.log('openCustomDocument called:', uri.fsPath);
     return {
       uri,
       dispose: () => {},
@@ -66,6 +69,10 @@ export function registerAvroEditor(
   return vscode.window.registerCustomEditorProvider(
     'avro-viewer.avroEditor',
     provider,
-    {}
+    {
+      webviewOptions: {
+        retainContextWhenHidden: true,
+      },
+    }
   );
 }

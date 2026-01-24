@@ -3,9 +3,19 @@ import * as path from 'path';
 import { AvroProcessor } from './AvroProcessor';
 import { MessageHandler, MessageHandlerContext } from './messageHandler';
 
+interface CachedAvroData {
+  schema: any;
+  records: any[];
+  header: string[];
+  total: number;
+}
+
 export class WebviewManager {
   private panel: vscode.WebviewPanel | undefined;
   private avroProcessor: AvroProcessor;
+  private currentFilePath: string | undefined;
+  private initialized: boolean = false;
+  private dataCache: Map<string, CachedAvroData> = new Map();
 
   constructor(
     private context: vscode.ExtensionContext,
@@ -22,8 +32,23 @@ export class WebviewManager {
 
     if (this.panel) {
       this.panel.reveal(vscode.ViewColumn.One);
-      this.loadFile(filePath);
       this.panel.title = `Avro Viewer: ${fileName}`;
+      // Send cached data if available
+      if (this.currentFilePath === filePath) {
+        const cached = this.dataCache.get(filePath);
+        if (cached) {
+          this.panel.webview.postMessage({
+            type: 'data',
+            schema: cached.schema,
+            records: cached.records,
+            header: cached.header,
+            total: cached.total,
+          });
+          return;
+        }
+      }
+      this.currentFilePath = filePath;
+      this.loadFile(filePath);
     } else {
       this.createPanel(filePath, fileName);
     }
@@ -33,29 +58,54 @@ export class WebviewManager {
    * Create or show panel for custom editor
    */
   public createOrShowWithPanel(filePath: string, panel: vscode.WebviewPanel): void {
+    console.log('createOrShowWithPanel:', filePath, 'panel:', !!panel, 'this.initialized:', this.initialized);
+    
+    // If this is the same panel and already initialized, don't reset
+    if (this.panel === panel && this.initialized) {
+      console.log('Panel already initialized, revealing...');
+      panel.reveal(vscode.ViewColumn.One);
+      // Send cached data if available
+      const cached = this.dataCache.get(filePath);
+      if (cached) {
+        panel.webview.postMessage({
+          type: 'data',
+          schema: cached.schema,
+          records: cached.records,
+          header: cached.header,
+          total: cached.total,
+        });
+      }
+      return;
+    }
+
+    console.log('Setting up new panel...');
     this.panel = panel;
+    this.currentFilePath = filePath;
     const fileName = path.basename(filePath);
 
-    this.panel.title = fileName;
-    this.panel.webview.options = {
+    panel.title = fileName;
+    panel.webview.options = {
       enableScripts: true,
       localResourceRoots: [
         vscode.Uri.joinPath(this.context.extensionUri, 'dist'),
       ],
     };
 
-    const scriptUri = this.panel.webview.asWebviewUri(
+    const scriptUri = panel.webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'webview.js')
     );
-    const styleUri = this.panel.webview.asWebviewUri(
+    const styleUri = panel.webview.asWebviewUri(
       vscode.Uri.joinPath(this.context.extensionUri, 'dist', 'webview.css')
     );
 
-    this.panel.webview.html = this.getHtmlContent(scriptUri, styleUri);
+    console.log('Setting HTML content...');
+    panel.webview.html = this.getHtmlContent(scriptUri, styleUri);
 
-    this.panel.onDidDispose(
+    panel.onDidDispose(
       () => {
+        console.log('Panel disposed');
         this.panel = undefined;
+        this.initialized = false;
       },
       undefined,
       this.context.subscriptions
@@ -67,16 +117,35 @@ export class WebviewManager {
       filePath,
     };
 
-    this.panel.webview.onDidReceiveMessage(
+    panel.webview.onDidReceiveMessage(
       (message) => this.messageHandler.handle(message, context),
       undefined,
       this.context.subscriptions
     );
 
+    // Check cache first
+    const cached = this.dataCache.get(filePath);
+    if (cached) {
+      console.log('Using cached data for:', filePath);
+      panel.webview.postMessage({
+        type: 'data',
+        schema: cached.schema,
+        records: cached.records,
+        header: cached.header,
+        total: cached.total,
+      });
+      this.initialized = true;
+      return;
+    }
+
+    console.log('Loading file:', filePath);
     this.loadFile(filePath);
+    this.initialized = true;
   }
 
   private createPanel(filePath: string, fileName: string): void {
+    this.currentFilePath = filePath;
+
     this.panel = vscode.window.createWebviewPanel(
       'avroViewer',
       `Avro Viewer: ${fileName}`,
@@ -102,6 +171,8 @@ export class WebviewManager {
     this.panel.onDidDispose(
       () => {
         this.panel = undefined;
+        this.initialized = false;
+        this.currentFilePath = undefined;
       },
       undefined,
       this.context.subscriptions
@@ -120,6 +191,7 @@ export class WebviewManager {
     );
 
     this.loadFile(filePath);
+    this.initialized = true;
   }
 
   private async loadFile(filePath: string): Promise<void> {
@@ -139,12 +211,22 @@ export class WebviewManager {
 
       console.log('✅ File loaded successfully:', records.length, 'records');
 
-      this.panel.webview.postMessage({
-        type: 'data',
+      const data: CachedAvroData = {
         schema,
         records,
         header: schema.fields?.map((f: any) => f.name) || [],
         total: records.length,
+      };
+
+      // Cache the data
+      this.dataCache.set(filePath, data);
+
+      this.panel.webview.postMessage({
+        type: 'data',
+        schema,
+        records,
+        header: data.header,
+        total: data.total,
       });
     } catch (error: any) {
       console.error('❌ Error loading file:', error.message);
@@ -164,7 +246,7 @@ export class WebviewManager {
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'none';
     img-src ${this.panel?.webview.cspSource} https: data:;
-    script-src ${this.panel?.webview.cspSource};
+    script-src ${this.panel?.webview.cspSource} 'unsafe-inline';
     style-src ${this.panel?.webview.cspSource} 'unsafe-inline';
     connect-src https:;
     font-src ${this.panel?.webview.cspSource};
