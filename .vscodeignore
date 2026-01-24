@@ -1,9 +1,58 @@
+# Exclude development files from extension package
+# This file is used by vsce (VSCode Extension Publisher)
+
+# VSCode settings
 .vscode/**
 .vscode-test/**
-test/**
+
+# Development files
 .gitignore
-.yarnrc
-vsc-extension-quickstart.md
-**/jsconfig.json
-**/*.map
-**/.eslintrc.json
+.gitattributes
+.eslintrc.js
+.eslintrc.json
+.prettierrc
+.prettierignore
+.tsconfig.json
+.tsconfig.eslint.json
+jsconfig.json
+
+# Build output (re-generated during build)
+dist/
+webview/dist/
+
+# Dependencies (bundled by esbuild)
+node_modules/
+
+# Source files (bundled into dist/)
+src/
+webview/src/
+
+# Web dependencies
+webview/node_modules/
+webview/package-lock.json
+webview/yarn.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
