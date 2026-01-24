@@ -3,7 +3,7 @@
   "publisher": "winse",
   "displayName": "Avro Viewer",
   "description": "View and analyze Avro files directly in VSCode",
-  "icon": "images/icon.jpg",
+  "icon": "images/logo.svg",
   "version": "0.2.0",
   "engines": {
     "vscode": "^1.78.0"

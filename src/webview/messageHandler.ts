@@ -90,7 +90,23 @@ export class MessageHandler {
     try {
       console.log('Exporting CSV:', data.length, 'records');
       const csv = this.convertToCSV(data);
-      const uri = vscode.Uri.parse(`avro-viewer:export.csv`);
+
+      // Show save dialog
+      const defaultUri = vscode.Uri.file('export.csv');
+      const uri = await vscode.window.showSaveDialog({
+        defaultUri,
+        saveLabel: 'Export CSV',
+        filters: {
+          'CSV Files': ['csv'],
+          'All Files': ['*'],
+        },
+      });
+
+      if (!uri) {
+        // User cancelled
+        return;
+      }
+
       await vscode.workspace.fs.writeFile(uri, Buffer.from(csv));
 
       context.panel.webview.postMessage({
@@ -115,7 +131,24 @@ export class MessageHandler {
     try {
       console.log('Exporting JSON:', data.length, 'records');
       const json = JSON.stringify(data, null, 2);
-      const uri = vscode.Uri.parse(`avro-viewer:export.json`);
+
+      // Show save dialog
+      const defaultUri = vscode.Uri.file('export.json');
+      const uri = await vscode.window.showSaveDialog({
+        defaultUri,
+        saveLabel: 'Export JSON',
+        filters: {
+          'JSON Files': ['json'],
+          'All Files': ['*'],
+        },
+      });
+
+      if (!uri) {
+        // User cancelled
+        return;
+      }
+
+      await vscode.workspace.fs.writeFile(uri, Buffer.from(json));
       await vscode.workspace.fs.writeFile(uri, Buffer.from(json));
 
       context.panel.webview.postMessage({
