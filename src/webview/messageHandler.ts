@@ -65,8 +65,10 @@ export class MessageHandler {
     // If no cached data, reload the file
     try {
       const avroProcessor = new (require('./AvroProcessor').AvroProcessor)();
-      const { schema, records } = await avroProcessor.processFile(context.filePath);
-      
+      const { schema, records } = await avroProcessor.processFile(
+        context.filePath
+      );
+
       context.panel.webview.postMessage({
         type: 'data',
         schema,
@@ -108,6 +110,9 @@ export class MessageHandler {
       }
 
       await vscode.workspace.fs.writeFile(uri, Buffer.from(csv));
+      vscode.window.showInformationMessage(
+        `CSV exported successfully to ${uri.fsPath}`
+      );
 
       context.panel.webview.postMessage({
         type: 'exportComplete',
@@ -149,7 +154,9 @@ export class MessageHandler {
       }
 
       await vscode.workspace.fs.writeFile(uri, Buffer.from(json));
-      await vscode.workspace.fs.writeFile(uri, Buffer.from(json));
+      vscode.window.showInformationMessage(
+        `JSON exported successfully to ${uri.fsPath}`
+      );
 
       context.panel.webview.postMessage({
         type: 'exportComplete',
