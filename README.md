@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Avro Explorer Logo](images/logo.svg)
+![Avro Explorer Logo](images/logo.png)
 
 **A professional Visual Studio Code extension for viewing and exploring Apache Avro files**
 
@@ -18,6 +18,7 @@
 ## ✨ Features
 
 ### 📊 Interactive Data Table
+
 - Sort records by any column (click column header)
 - Filter records with column-specific search
 - Pagination with customizable page size
@@ -25,22 +26,26 @@
 - Export selected or all data
 
 ### 📋 Schema Display
+
 - Syntax-highlighted JSON schema view
 - Quick copy to clipboard
 - Shows type, name, and field count
 
 ### ↔️ Flexible View Modes
+
 - **Split View** - Schema and records side by side
 - **Schema Only** - Focus on schema definition
 - **Records Only** - Full-screen data exploration
 - Resizable panels for custom layouts
 
 ### 🎨 Theme Aware
+
 - Automatically adapts to VSCode light/dark themes
 - Consistent styling with editor colors
 - Smooth hover and selection effects
 
 ### 💾 Export Capabilities
+
 - Export to CSV (comma-separated values)
 - Export to JSON (formatted with indentation)
 - System save dialog for file location
@@ -55,11 +60,11 @@
 
 ### View Mode Switching
 
-| Icon | Mode | Description |
-|------|------|-------------|
-| ⇆ | Split | Schema and records side by side |
-| 📋 | Schema | Full schema view |
-| 📊 | Records | Full records table |
+| Icon | Mode    | Description                     |
+| ---- | ------- | ------------------------------- |
+| ⇆    | Split   | Schema and records side by side |
+| 📋   | Schema  | Full schema view                |
+| 📊   | Records | Full records table              |
 
 ### Filtering Records
 
@@ -87,11 +92,12 @@ Click on any column header to sort ascending/descending.
 
 ## ⌨️ Commands
 
-| Command | Description |
-|---------|-------------|
+| Command              | Description                        |
+| -------------------- | ---------------------------------- |
 | `avro-explorer.open` | Open current file in Avro Explorer |
 
 Access via `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac):
+
 1. Type "Avro Explorer"
 2. Select the command
 
@@ -99,7 +105,7 @@ Access via `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac):
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - VSCode for testing
 
