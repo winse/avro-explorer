@@ -9,6 +9,7 @@
 [![Version](https://img.shields.io/visual-studio-marketplace/v/winse.avro-explorer?style=flat-square&color=0068e0)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/winse.avro-explorer?style=flat-square&color=42b883)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/winse.avro-explorer?style=flat-square&color=ffc107)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
+[![Open VSX](https://img.shields.io/badge/Open%20VSX-Avro%20Explorer-blue)](https://open-vsx.org/extension/winse/avro-explorer)
 [![License](https://img.shields.io/github/license/winse/avro-explorer?style=flat-square&color=blue)](LICENSE)
 
 </div>
