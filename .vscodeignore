@@ -65,3 +65,4 @@ tsconfig.json
 tsconfig.eslint.json
 webview/tsconfig.json
 webview/vite.config.js
+*.vsix

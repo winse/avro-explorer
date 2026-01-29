@@ -21,6 +21,8 @@ export function useAvroData(): UseAvroDataReturn {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    console.log('[useAvroData] Initializing...');
+
     const handleMessage = (event: MessageEvent) => {
       const message = event.data;
 
@@ -31,6 +33,7 @@ export function useAvroData(): UseAvroDataReturn {
           break;
 
         case 'metadata':
+          // console.log('[useAvroData] Metadata received');
           setSchema(message.schema);
           break;
 
@@ -47,6 +50,7 @@ export function useAvroData(): UseAvroDataReturn {
           break;
 
         case 'error':
+          console.error('[useAvroData] Error:', message.message);
           setError(message.message);
           setLoading(false);
           break;
@@ -60,7 +64,9 @@ export function useAvroData(): UseAvroDataReturn {
       type: 'getData',
     });
 
-    return () => window.removeEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
   }, []);
 
   const filteredRecords = useMemo(() => {

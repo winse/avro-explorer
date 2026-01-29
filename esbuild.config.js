@@ -1,4 +1,5 @@
 const esbuild = require('esbuild');
+const { sassPlugin } = require('esbuild-sass-plugin');
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
 
@@ -32,10 +33,15 @@ async function build() {
       format: 'esm',
       platform: 'browser',
       outfile: 'dist/webview.js',
+      plugins: [sassPlugin()],
       loader: {
         '.tsx': 'tsx',
         '.css': 'css',
         '.svg': 'dataurl',
+        '.eot': 'file',
+        '.woff': 'file',
+        '.woff2': 'file',
+        '.ttf': 'file',
       },
       define: {
         'process.env.NODE_ENV': '"production"',

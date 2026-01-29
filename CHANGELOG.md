@@ -5,6 +5,14 @@ All notable changes to Avro Explorer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-01-29
+
+### Changed
+- **Blueprint 6 Upgrade**: Refactored layout using `Section` and `SectionCard` components for a professional look.
+- **Virtualized Table**: Integrated `@blueprintjs/table` (Table2) to support smooth scrolling of large datasets without manual pagination.
+- **Inline Column Filtering**: Filter records directly from each table column header.
+- **Theme Synchronization Hook**: Automatic detection and application of `bp6-dark` based on VS Code's active theme.
+
 ## [0.3.0] - 2024-01-24
 
 ### Added

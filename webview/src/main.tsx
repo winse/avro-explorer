@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
+import { FocusStyleManager } from "@blueprintjs/core";
 import App from './App';
+
+FocusStyleManager.onlyShowFocusOnTabs();
 
 declare global {
   interface Window {

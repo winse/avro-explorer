@@ -1,19 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import SchemaViewer from './components/SchemaViewer';
-import RecordsTable from './components/RecordsTable';
-import Toolbar from './components/Toolbar';
-import Loading from './components/Loading';
-import ErrorMessage from './components/ErrorMessage';
+import React, { useState } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Icon,
+  InputGroup,
+  Navbar,
+  NonIdealState,
+  Spinner,
+  Tag,
+  HTMLSelect,
+  ProgressBar,
+  Divider,
+} from '@blueprintjs/core';
+import { SchemaPanel } from './components/SchemaPanel';
+import { RecordsPanel } from './components/RecordsPanel';
 import { useAvroData } from './hooks/useAvroData';
-import { useWebviewMessage } from './hooks/useWebviewMessage';
-import './styles/App.css';
+import { useIsDarkTheme } from './hooks/useTheme';
 
-const App: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'split' | 'records' | 'schema'>(
-    'split'
+import './App.scss';
+
+const AvroApp: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'both' | 'schema' | 'records'>(
+    'both'
   );
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterColumn, setFilterColumn] = useState('all');
+  const [leftWidth, setLeftWidth] = useState(30);
+  const [isResizing, setIsResizing] = useState(false);
 
   const {
     schema,
@@ -26,138 +37,170 @@ const App: React.FC = () => {
     filteredRecords,
   } = useAvroData();
 
-  const handleMessage = useCallback((message: any) => {
-    switch (message.type) {
-      case 'exportComplete':
-        console.log('Export successful:', message.message);
-        break;
-      case 'exportError':
-        console.error('Export failed:', message.message);
-        break;
-      case 'copyComplete':
-        console.log('Copy successful');
-        break;
-    }
-  }, []);
+  const handleMouseMove = React.useCallback(
+    (e: MouseEvent) => {
+      if (!isResizing) return;
+      const newWidth = (e.clientX / window.innerWidth) * 100;
+      if (newWidth > 15 && newWidth < 85) {
+        setLeftWidth(newWidth);
+      }
+    },
+    [isResizing]
+  );
 
-  useWebviewMessage(handleMessage);
-
-  const [splitWidth, setSplitWidth] = useState(40); // percentage
-  const [isResizing, setIsResizing] = useState(false);
-
-  const startResizing = useCallback(() => {
-    setIsResizing(true);
-  }, []);
-
-  const stopResizing = useCallback(() => {
+  const handleMouseUp = React.useCallback(() => {
     setIsResizing(false);
   }, []);
 
-  const resize = useCallback((e: MouseEvent) => {
+  React.useEffect(() => {
     if (isResizing) {
-      const newWidth = (e.clientX / window.innerWidth) * 100;
-      if (newWidth > 10 && newWidth < 90) {
-        setSplitWidth(newWidth);
-      }
-    }
-  }, [isResizing]);
-
-  useEffect(() => {
-    if (isResizing) {
-      window.addEventListener('mousemove', resize);
-      window.addEventListener('mouseup', stopResizing);
-    } else {
-      window.removeEventListener('mousemove', resize);
-      window.removeEventListener('mouseup', stopResizing);
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
     }
     return () => {
-      window.removeEventListener('mousemove', resize);
-      window.removeEventListener('mouseup', stopResizing);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isResizing, resize, stopResizing]);
+  }, [isResizing, handleMouseMove, handleMouseUp]);
 
-  const handleExport = useCallback(
-    (format: 'CSV' | 'JSON') => {
-      const data = viewMode === 'records' ? filteredRecords : records;
-      console.log('Export clicked:', format, 'data count:', data.length);
-      window.vscode?.postMessage({
-        type: `export${format}`,
-        data,
+  // console.log('[AvroApp] State:', { loading, error, hasSchema: !!schema, recordsCount: records.length, headerCount: header.length, leftWidth });
+
+  const handleExport = (format: 'csv' | 'json') => {
+    if (window.vscode) {
+      // console.log('[AvroApp] Exporting:', format, filteredRecords.length, 'records');
+      window.vscode.postMessage({
+        type: format === 'csv' ? 'exportCSV' : 'exportJSON',
+        data: filteredRecords,
       });
-    },
-    [viewMode, filteredRecords, records]
-  );
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <Spinner size={50} />
+        <div className="loading-text">Loading Avro data...</div>
+        {progress > 0 && progress < total && (
+          <ProgressBar
+            value={total > 0 ? progress / total : 0}
+            intent="primary"
+            stripes={false}
+          />
+        )}
+        <Tag minimal>
+          {progress} / {total}
+        </Tag>
+      </div>
+    );
+  }
 
   if (error) {
     return (
-      <ErrorMessage message={error} onRetry={() => window.location.reload()} />
+      <NonIdealState
+        icon="error"
+        title="Error Loading Avro File"
+        description={error}
+      />
+    );
+  }
+
+  if (!schema && !records.length) {
+    return (
+      <NonIdealState
+        icon="search"
+        title="No Data"
+        description="No Avro data found in this file."
+      />
     );
   }
 
   return (
-    <div className={`avro-explorer ${isResizing ? 'resizing' : ''}`}>
-      <Toolbar
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        onExport={handleExport}
-        recordCount={filteredRecords.length}
-        totalCount={records.length}
-      />
+    <div
+      className="app-container"
+      style={{ '--left-width': `${leftWidth}%` } as React.CSSProperties}
+    >
+      <Navbar className="app-navbar">
+        <Navbar.Group align="left">
+          <ButtonGroup minimal>
+            <Button
+              icon="exchange"
+              active={viewMode === 'both'}
+              onClick={() => setViewMode('both')}
+              title="Split View"
+            />
+            <Button
+              icon="document"
+              active={viewMode === 'schema'}
+              onClick={() => setViewMode('schema')}
+              title="Schema ONLY"
+            />
+            <Button
+              icon="th"
+              active={viewMode === 'records'}
+              onClick={() => setViewMode('records')}
+              title="Records ONLY"
+            />
+          </ButtonGroup>
+        </Navbar.Group>
+        <Navbar.Group align="right">
+          <ButtonGroup minimal>
+            <Button
+              icon="export"
+              intent="primary"
+              onClick={() => handleExport('csv')}
+            >
+              CSV
+            </Button>
+            <Button
+              icon="code"
+              intent="primary"
+              onClick={() => handleExport('json')}
+            >
+              JSON
+            </Button>
+          </ButtonGroup>
+        </Navbar.Group>
+      </Navbar>
 
-      {loading && <Loading progress={progress} total={total} />}
+      <div className={`main-content mode-${viewMode}`}>
+        {(viewMode === 'both' || viewMode === 'schema') && (
+          <div className="panel schema-section">
+            {schema && <SchemaPanel schema={schema} />}
+          </div>
+        )}
 
-      {!loading && (
-        <div className={`content ${viewMode}`}>
-          {viewMode === 'schema' && (
-            <div className="schema-panel" style={{ flex: 1 }}>
-              <SchemaViewer schema={schema} />
-            </div>
-          )}
+        {viewMode === 'both' && (
+          <Divider
+            className={`resize-divider ${isResizing ? 'is-resizing' : ''}`}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setIsResizing(true);
+            }}
+          />
+        )}
 
-          {viewMode === 'records' && (
-            <div className="records-panel" style={{ flex: 1 }}>
-              <RecordsTable
-                records={filteredRecords}
-                header={header}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                filterColumn={filterColumn}
-                onFilterColumnChange={setFilterColumn}
-              />
-            </div>
-          )}
-
-          {viewMode === 'split' && (
-            <>
-              <div 
-                className="schema-panel" 
-                style={{ width: `${splitWidth}%`, flex: 'none' }}
-              >
-                <SchemaViewer schema={schema} />
-              </div>
-              <div 
-                className="resizer" 
-                onMouseDown={startResizing}
-              />
-              <div 
-                className="records-panel" 
-                style={{ width: `${100 - splitWidth}%`, flex: 'none' }}
-              >
-                <RecordsTable
-                  records={filteredRecords}
-                  header={header}
-                  searchTerm={searchTerm}
-                  onSearchChange={setSearchTerm}
-                  filterColumn={filterColumn}
-                  onFilterColumnChange={setFilterColumn}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      )}
+        {(viewMode === 'both' || viewMode === 'records') && (
+          <div className="panel records-section">
+            <RecordsPanel
+              records={records}
+              header={header}
+              filteredRecords={filteredRecords}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default App;
+const ThemeApp: React.FC = () => {
+  const isDark = useIsDarkTheme();
+  return (
+    <div className={isDark ? 'bp6-dark' : ''}>
+      <AvroApp />
+    </div>
+  );
+};
+
+export default ThemeApp;
+

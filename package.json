@@ -4,7 +4,7 @@
   "displayName": "Avro Explorer",
   "description": "Professional Avro file viewer with interactive data table, schema display, and export capabilities. Double-click to open .avro files directly.",
   "icon": "images/logo.png",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -51,6 +51,7 @@
     ]
   },
   "scripts": {
+    "clean": "if exist dist rmdir /s /q dist & if exist *.vsix del /q *.vsix",
     "compile": "npm run check-types && node esbuild.config.js",
     "check-types": "tsc --noEmit",
     "watch": "npm-run-all -p watch:*",
@@ -66,8 +67,7 @@
     "avsc": "^5.7.9",
     "prismjs": "^1.30.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tabulator-tables": "^6.3.1"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -76,12 +76,12 @@
     "@types/prismjs": "^1.26.3",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
-    "@types/tabulator-tables": "^6.3.1",
     "@types/vscode": "^1.78.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vscode/test-electron": "^2.3.0",
     "esbuild": "^0.24.0",
+    "esbuild-sass-plugin": "^3.6.0",
     "eslint": "^8.39.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -95,6 +95,7 @@
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
+    "sass": "^1.97.3",
     "typescript": "^5.0.4"
   },
   "repository": {
