@@ -29,7 +29,8 @@ A powerful Avro file viewer with interactive data table, schema display, and fle
 ### 📊 Interactive Data Table
 
 - Sort records by any column (click column header)
-- Filter records with column-specific search
+- **Virtualized Table** - Smooth scrolling of large datasets with `@blueprintjs/table`
+- **Inline Column Filtering** - Filter records directly from each table column header
 - Pagination with customizable page size
 - Row selection with Windows-style highlighting
 - Export selected or all data
@@ -49,7 +50,7 @@ A powerful Avro file viewer with interactive data table, schema display, and fle
 
 ### 🎨 Theme Aware
 
-- Automatically adapts to VSCode light/dark themes
+- **Blueprint 6 Dark Mode** - Automatic `bp6-dark` theme synchronization
 - Consistent styling with editor colors
 - Smooth hover and selection effects
 
@@ -168,7 +169,8 @@ avro-explorer/
 
 - **Extension**: TypeScript + esbuild
 - **WebView**: React 18 + TypeScript
-- **Data Table**: Tabulator 5.x
+- **UI Framework**: Blueprint 6 (Section, SectionCard, Table2)
+- **Virtualized Table**: @blueprintjs/table
 - **Syntax Highlighting**: Prism.js
 - **Linting**: ESLint + Prettier
 
@@ -179,7 +181,7 @@ avro-explorer/
   "name": "avro-explorer",
   "displayName": "Avro Explorer",
   "publisher": "winse",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -214,7 +216,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ## 🙏 Acknowledgments
 
 - [Apache Avro](https://avro.apache.org/) - Data serialization format
-- [Tabulator](http://tabulator.info/) - Interactive table library
+- [Blueprint 6](https://blueprintjs.com/) - React UI framework
 - [Prism.js](https://prismjs.com/) - Syntax highlighting
 - [Original avro-viewer](https://github.com/yasunari89/avro-viewer) by Yasunari Ota
 
