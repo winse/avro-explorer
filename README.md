@@ -185,7 +185,7 @@ avro-explorer/
   "engines": {
     "vscode": "^1.78.0"
   },
-  "categories": ["Other"],
+  "categories": ["Visualization"],
   "keywords": ["avro", "explorer", "viewer", "data", "schema"],
   "activationEvents": [
     "onCustomEditor:avro-explorer.avroEditor",
