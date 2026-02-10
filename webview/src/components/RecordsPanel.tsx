@@ -179,7 +179,7 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
 
       <div className="panel-footer pagination" style={{ flexShrink: 0 }}>
         <div className="pagination-left">
-          <Text>Page Size</Text>
+          <Text className="page-size-label">Page Size</Text>
           <HTMLSelect
             value={pageSize}
             onChange={(e) => {
@@ -224,8 +224,11 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
         </div>
 
         <div className="pagination-right">
-          <Tag>
+          <Tag className="pagination-total">
             Total: {sortedRecords.length} records ({totalPages} pages)
+          </Tag>
+          <Tag className="pagination-total-compact">
+            {sortedRecords.length}({totalPages})
           </Tag>
         </div>
       </div>
