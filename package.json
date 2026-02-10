@@ -4,7 +4,7 @@
   "displayName": "Avro Explorer",
   "description": "Professional Avro file viewer with interactive data table, schema display, and export capabilities. Double-click to open .avro files directly.",
   "icon": "images/logo.png",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engines": {
     "vscode": "^1.78.0"
   },
