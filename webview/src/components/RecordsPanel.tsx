@@ -9,9 +9,11 @@ import {
   Button,
   ButtonGroup,
   Text,
-  FormGroup,
 } from '@blueprintjs/core';
-import { Table, Column, Cell, ColumnHeaderCell, RowHeaderCell } from '@blueprintjs/table';
+import { Table, Column, Cell, ColumnHeaderCell, RowHeaderCell, Regions, RegionCardinality, type Region } from '@blueprintjs/table';
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/components/prism-json';
 
 interface RecordsPanelProps {
   records: any[];
@@ -31,6 +33,15 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
   );
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(1);
+  const [preview, setPreview] = useState<{
+    rowNumber: number;
+    columnKey: string;
+    value: string;
+    isJson: boolean;
+  } | null>(null);
+  const [previewHeight, setPreviewHeight] = useState(160);
+  const [isResizingPreview, setIsResizingPreview] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Apply column filters to filteredRecords
   const fullyFilteredRecords = useMemo(() => {
@@ -55,6 +66,34 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
   React.useEffect(() => {
     setCurrentPage(1);
   }, [columnFilters, filteredRecords]);
+
+  React.useEffect(() => {
+    if (!isResizingPreview) return;
+    const handleMove = (e: MouseEvent) => {
+      const delta = e.movementY;
+      setPreviewHeight((prev) => {
+        const next = prev - delta;
+        if (next < 80) return 80;
+        if (next > 400) return 400;
+        return next;
+      });
+    };
+    const handleUp = () => {
+      setIsResizingPreview(false);
+    };
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleUp);
+    };
+  }, [isResizingPreview]);
+
+  React.useEffect(() => {
+    if (isPreviewOpen && preview) {
+      Prism.highlightAll();
+    }
+  }, [isPreviewOpen, preview]);
 
   // Apply sorting
   const sortedRecords = useMemo(() => {
@@ -99,11 +138,37 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
   const renderCell = (rowIndex: number, columnKey: string) => {
     const value = paginatedRecords[rowIndex]?.[columnKey];
     const isOdd = rowIndex % 2 !== 0;
+    const displayValue = formatCellValue(value);
     return (
       <Cell className={isOdd ? 'odd-row' : ''}>
-        {String(value ?? '')}
+        <div className="cell-content">
+          <span className="cell-text" title={displayValue}>
+            {displayValue}
+          </span>
+        </div>
       </Cell>
     );
+  };
+
+  const handleSelection = (selectedRegions: Region[]) => {
+    if (!selectedRegions || selectedRegions.length === 0) return;
+    const region = selectedRegions[selectedRegions.length - 1];
+    const numRows = paginatedRecords.length;
+    const numCols = header.length;
+    if (numRows === 0 || numCols === 0) return;
+    const cellRegion = Regions.getCellRegionFromRegion(region, numRows, numCols);
+    const rowIndex = cellRegion.rows[0];
+    const colIndex = cellRegion.cols[0];
+    const columnKey = header[colIndex];
+    if (columnKey === undefined) return;
+    const value = paginatedRecords[rowIndex]?.[columnKey];
+    const rowNumber = (currentPage - 1) * pageSize + rowIndex + 1;
+    setPreview({
+      rowNumber,
+      columnKey,
+      value: formatPreviewValue(value),
+      isJson: value !== null && typeof value === 'object',
+    });
   };
 
   const renderColumnHeader = (columnName: string) => {
@@ -140,6 +205,12 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
       className="panel records-section-container"
       rightElement={
         <div className="header-right-tools">
+          <Button
+            minimal
+            icon={isPreviewOpen ? 'eye-open' : 'eye-off'}
+            title={isPreviewOpen ? 'Hide preview' : 'Show preview'}
+            onClick={() => setIsPreviewOpen((prev) => !prev)}
+          />
           <Tag round intent="primary">
             {sortedRecords.length} / {records.length} records
           </Tag>
@@ -164,6 +235,8 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
             defaultColumnWidth={150}
             minColumnWidth={100}
             enableColumnResizing={true}
+            selectionModes={[RegionCardinality.CELLS]}
+            onSelection={handleSelection}
           >
             {header.map((h) => (
               <Column
@@ -175,6 +248,62 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
             ))}
           </Table>
         </div>
+        {isPreviewOpen && (
+          <>
+            <div
+              className={`record-preview-resizer ${
+                isResizingPreview ? 'is-resizing' : ''
+              }`}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setIsResizingPreview(true);
+              }}
+            />
+            <div className="record-preview">
+              <div
+                className="record-preview-inner"
+                style={{ height: previewHeight }}
+              >
+                <div className="record-preview-header">
+                  <div className="record-preview-title">
+                    <Icon icon="eye-open" size={12} />
+                    <Text>Preview</Text>
+                    {preview && (
+                      <Tag minimal>
+                        Row {preview.rowNumber} - {preview.columnKey}
+                      </Tag>
+                    )}
+                  </div>
+                  <Button
+                    minimal
+                    small
+                    icon="cross"
+                    onClick={() => setIsPreviewOpen(false)}
+                  />
+                </div>
+                <div className="record-preview-body">
+                  {preview ? (
+                    <pre className="record-preview-content">
+                      <code
+                        className={
+                          preview.isJson ? 'language-json' : 'language-none'
+                        }
+                      >
+                        {preview.value}
+                      </code>
+                    </pre>
+                  ) : (
+                    <pre className="record-preview-content">
+                      <code className="language-none">
+                        Select a cell to preview its value.
+                      </code>
+                    </pre>
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </SectionCard>
 
       <div className="panel-footer pagination" style={{ flexShrink: 0 }}>
@@ -234,4 +363,32 @@ export const RecordsPanel: React.FC<RecordsPanelProps> = ({
       </div>
     </Section>
   );
+};
+
+const formatCellValue = (value: unknown): string => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object') {
+    return safeStringify(value);
+  }
+  return String(value);
+};
+
+const formatPreviewValue = (value: unknown): string => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object') {
+    return safeStringify(value, 2);
+  }
+  return String(value);
+};
+
+const safeStringify = (value: unknown, space?: number): string => {
+  try {
+    return JSON.stringify(
+      value,
+      (_key, val) => (typeof val === 'bigint' ? val.toString() : val),
+      space
+    );
+  } catch {
+    return String(value);
+  }
 };

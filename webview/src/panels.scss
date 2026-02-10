@@ -53,6 +53,94 @@
         min-height: 0;
     }
 
+    .cell-content {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .cell-text {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .record-preview-resizer {
+        height: 6px;
+        cursor: row-resize;
+        background-color: transparent;
+        border-top: 1px solid var(--vscode-panel-border);
+        border-bottom: 1px solid var(--vscode-panel-border);
+        opacity: 0.6;
+    }
+
+    .record-preview-resizer:hover,
+    .record-preview-resizer.is-resizing {
+        background-color: var(--vscode-list-hoverBackground);
+        opacity: 1;
+    }
+
+    .record-preview {
+        background-color: var(--vscode-editor-background);
+        color: var(--vscode-editor-foreground);
+        overflow: hidden;
+    }
+
+    .record-preview-inner {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-height: 80px;
+        max-height: 400px;
+    }
+
+    .record-preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+        padding: 8px 10px 6px;
+        background: var(--vscode-editor-background);
+        border-bottom: 1px solid var(--vscode-panel-border);
+    }
+
+    .record-preview-body {
+        flex: 1;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+
+    .record-preview-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--vscode-descriptionForeground);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+    .record-preview-content {
+        margin: 0 10px 10px;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .record-preview-content code {
+        display: block;
+        white-space: inherit;
+        word-break: inherit;
+    }
+
     .filter-container {
         padding: 0 8px 8px;
     }
