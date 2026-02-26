@@ -57,8 +57,9 @@
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.config.js --watch",
     "watch:tsc": "tsc --noEmit --watch",
-    "package": "npm run check-types && node esbuild.config.js --production",
-    "pkg": "vsce package",
+    "compile:prod": "npm run check-types && node esbuild.config.js --production",
+    "package": "vsce package",
+    "pkg": "npm run clean && npm run compile:prod && npm run package",
     "publish": "vsce publish",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "npm run lint && node ./test/runTest.js"

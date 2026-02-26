@@ -7,17 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.2] - 2026-02-10
 
+### Added
+
+- **Cell Preview Panel**: Click any cell to preview full content with JSON syntax highlighting
+  - Resizable panel with drag-to-adjust height
+  - Toggle visibility via eye icon in toolbar
+  - Automatic JSON formatting for object values
+
 ### Fixed
 
-- **Long Type Compatibility**: Fixed JavaScript compatibility issues with long data types (BigInt)
+- **Long Type Compatibility**: Fixed JavaScript BigInt compatibility issues with Avro long type values
+  - Long values now automatically convert to strings for proper display
 
 ### Improved
 
-- **Display Optimization**: Enhanced table display when viewport is not wide enough
-
-### Added
-
-- **Data Preview Panel**: Added a dedicated preview panel to display full cell data content
+- **Responsive Layout**: Enhanced table display for narrow viewports with compact pagination
+- **Compression Support**: Added support for deflate and snappy compressed Avro files
 
 ## [0.3.1] - 2026-01-29
 

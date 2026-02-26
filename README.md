@@ -6,10 +6,8 @@
 
 **A professional Visual Studio Code extension for viewing and exploring Apache Avro files**
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/winse.avro-explorer?style=flat-square&color=0068e0)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/winse.avro-explorer?style=flat-square&color=42b883)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/winse.avro-explorer?style=flat-square&color=ffc107)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
-[![Open VSX](https://img.shields.io/badge/Open%20VSX-Avro%20Explorer-blue)](https://open-vsx.org/extension/winse/avro-explorer)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/winse.avro-explorer?style=flat-square&label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=winse.avro-explorer)
+[![Open VSX Version](https://img.shields.io/open-vsx/v/winse/avro-explorer?style=flat-square&label=Open%20VSX)](https://open-vsx.org/extension/winse/avro-explorer)
 [![License](https://img.shields.io/github/license/winse/avro-explorer?style=flat-square&color=blue)](LICENSE)
 
 </div>
@@ -31,6 +29,7 @@ A powerful Avro file viewer with interactive data table, schema display, and fle
 - Sort records by any column (click column header)
 - **Virtualized Table** - Smooth scrolling of large datasets with `@blueprintjs/table`
 - **Inline Column Filtering** - Filter records directly from each table column header
+- **Cell Preview Panel** - Click any cell to preview full content in resizable panel with JSON syntax highlighting
 - Pagination with customizable page size
 - Row selection with Windows-style highlighting
 - Export selected or all data
@@ -92,13 +91,21 @@ Click on any column header to sort ascending/descending.
 2. Choose save location in the dialog
 3. Data is exported in your chosen format
 
+### Previewing Cell Content
+
+1. Click on any cell in the data table
+2. A preview panel appears showing the full content
+3. For JSON objects, syntax highlighting is applied
+4. Drag the resizer to adjust panel height
+5. Toggle preview visibility with the eye icon in toolbar
+
 ## 📋 Requirements
 
 - **Visual Studio Code**: 1.78.0 or higher
 - **Operating System**: Windows, macOS, Linux
-- **Avro Files**: Uncompressed Avro files only
+- **Avro Files**: Supports uncompressed and compressed Avro files (deflate, snappy)
 
-> **Note**: This extension does not support compressed Avro files (deflate, snappy, or other compression codecs).
+> **Note**: Supports both uncompressed and compressed Avro files. Long type values are automatically converted to strings for JavaScript compatibility.
 
 ## ⌨️ Commands
 
