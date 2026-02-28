@@ -1,5 +1,6 @@
 const esbuild = require('esbuild');
 const { sassPlugin } = require('esbuild-sass-plugin');
+const path = require('path');
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
 
@@ -13,6 +14,11 @@ const sharedConfig = {
 
 async function build() {
   try {
+    const reactAlias = {
+      react: path.resolve(__dirname, 'node_modules', 'react'),
+      'react-dom': path.resolve(__dirname, 'node_modules', 'react-dom'),
+    };
+
     // 构建 VSCode 扩展（CommonJS 格式，用于 Node.js 环境）
     const extensionConfig = {
       ...sharedConfig,
@@ -33,6 +39,7 @@ async function build() {
       format: 'esm',
       platform: 'browser',
       outfile: 'dist/webview.js',
+      alias: reactAlias,
       plugins: [sassPlugin()],
       loader: {
         '.tsx': 'tsx',

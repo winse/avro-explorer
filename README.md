@@ -33,12 +33,16 @@ A powerful Avro file viewer with interactive data table, schema display, and fle
 - Pagination with customizable page size
 - Row selection with Windows-style highlighting
 - Export selected or all data
+- **🔍 Global Search** - Search across all columns with Ctrl+F shortcut
+- **📊 Column Charts** - Visual distribution charts for column values
+- **📐 Column Operations** - Show/hide columns, drag to reorder
 
 ### 📋 Schema Display
 
 - Syntax-highlighted JSON schema view
 - Quick copy to clipboard
 - Shows type, name, and field count
+- **🔄 Two Modes** - Fields list and JSON view switching
 
 ### ↔️ Flexible View Modes
 
@@ -153,6 +157,7 @@ npm run package
 ### Project Structure
 
 ```
+data-viewer/           # Shared UI components library
 avro-explorer/
 ├── src/                     # Extension source (TypeScript)
 │   ├── commands/           # VSCode commands
@@ -180,6 +185,7 @@ avro-explorer/
 - **Virtualized Table**: @blueprintjs/table
 - **Syntax Highlighting**: Prism.js
 - **Linting**: ESLint + Prettier
+- **data-viewer**: Shared UI components library (used by both Parquet and Avro explorers)
 
 ## 📝 Extension Manifest
 

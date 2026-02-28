@@ -6,6 +6,9 @@ export interface MessageHandlerContext {
   filePath?: string;
 }
 
+const PREVIEW_PANEL_STATE_KEY = 'avro-explorer-preview-panel-open';
+const PREVIEW_PANEL_HEIGHT_KEY = 'avro-explorer-preview-panel-height';
+
 export class MessageHandler {
   public handle(message: any, context: MessageHandlerContext): void {
     console.log('MessageHandler received:', message.type, message);
@@ -27,9 +30,42 @@ export class MessageHandler {
       case 'showNotification':
         this.showNotification(message, context);
         break;
+      case 'savePreviewState':
+        this.savePreviewState(message, context);
+        break;
+      case 'getPreviewState':
+        this.getPreviewState(context);
+        break;
       default:
         console.log('Unknown message type:', type, message);
     }
+  }
+
+  private savePreviewState(message: any, context: MessageHandlerContext): void {
+    const { isOpen, height } = message;
+    const config = vscode.workspace.getConfiguration('avro-explorer');
+    
+    // Save open state
+    config.update('previewPanelOpen', isOpen, vscode.ConfigurationTarget.Global);
+    
+    // Save height if provided
+    if (height !== undefined) {
+      config.update('previewPanelHeight', height, vscode.ConfigurationTarget.Global);
+    }
+    
+    console.log('Preview panel state saved:', { isOpen, height });
+  }
+
+  private getPreviewState(context: MessageHandlerContext): void {
+    const config = vscode.workspace.getConfiguration('avro-explorer');
+    const isOpen = config.get<boolean>('previewPanelOpen', false);
+    const height = config.get<number>('previewPanelHeight', 25);
+    context.panel.webview.postMessage({
+      type: 'previewState',
+      isOpen,
+      height,
+    });
+    console.log('Preview panel state sent:', { isOpen, height });
   }
 
   private showNotification(message: any, context: MessageHandlerContext): void {

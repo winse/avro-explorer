@@ -5,6 +5,30 @@ All notable changes to Avro Explorer will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-02-28
+
+### Added
+
+- **Global Search** - Search across all columns with Ctrl+F shortcut
+- **Column Charts** - Visual distribution charts showing value frequencies per column
+- **Tree View Schema** - Hierarchical schema display with expandable nested types
+- **Column Operations** - Show/hide specific columns, drag to reorder, resize columns
+- **Virtual Scrolling** - Smooth handling of large datasets with viewport-based rendering
+- **Keyboard Shortcuts** - Navigate pages with Alt+Arrow keys, close panels with Escape
+- **Two Schema Modes** - Switch between fields list and JSON view
+- **Common Component Library** - Shared UI components with Parquet Explorer for consistent experience
+- **💾 Preview Panel State Persistence** - Remembers preview panel open/closed state across sessions
+
+### Enhanced
+
+- **Column Filtering** - Each column now has its own filter input in the header
+- **Preview Panel** - Enhanced cell preview with better formatting
+
+### Technical
+
+- Migrated to shared `data-viewer` library for UI components
+- Uses BlueprintJS 6 for consistent UI across data viewer extensions
+
 ## [0.3.2] - 2026-02-10
 
 ### Added
