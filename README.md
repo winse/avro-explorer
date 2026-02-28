@@ -67,9 +67,9 @@ A powerful Avro file viewer with interactive data table, schema display, and fle
 
 ### Quick Start
 
-1. **Double-click** any `.avro` file in VSCode Explorer
-2. Or **right-click** and select "Open in Avro Explorer"
-3. The file opens in Avro Explorer panel
+1. **Double-click** any `.avro` file in Explorer
+2. Or **right-click** -> **Open With...** -> `Avro Explorer`
+3. Or run command palette: `Open in Avro Explorer`
 
 ### View Mode Switching
 
@@ -196,7 +196,7 @@ avro-explorer/
   "name": "avro-explorer",
   "displayName": "Avro Explorer",
   "publisher": "winse",
-  "version": "0.3.2",
+  "version": "0.5.0",
   "engines": {
     "vscode": "^1.78.0"
   },
