@@ -134,6 +134,8 @@ Access via `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac):
 
 ```bash
 # Clone the repository
+git clone https://github.com/winse/data-viewer
+
 git clone https://github.com/winse/avro-explorer.git
 cd avro-explorer
 
