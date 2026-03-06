@@ -196,7 +196,7 @@ avro-explorer/
   "name": "avro-explorer",
   "displayName": "Avro Explorer",
   "publisher": "winse",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "engines": {
     "vscode": "^1.78.0"
   },

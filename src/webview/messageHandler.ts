@@ -4,10 +4,8 @@ export interface MessageHandlerContext {
   panel: vscode.WebviewPanel;
   extensionUri: vscode.Uri;
   filePath?: string;
+  context: vscode.ExtensionContext;
 }
-
-const PREVIEW_PANEL_STATE_KEY = 'avro-explorer-preview-panel-open';
-const PREVIEW_PANEL_HEIGHT_KEY = 'avro-explorer-preview-panel-height';
 
 export class MessageHandler {
   public handle(message: any, context: MessageHandlerContext): void {
@@ -30,42 +28,70 @@ export class MessageHandler {
       case 'showNotification':
         this.showNotification(message, context);
         break;
-      case 'savePreviewState':
-        this.savePreviewState(message, context);
+      case 'savePreviewPreference':
+        this.savePreviewPreference(message, context);
         break;
-      case 'getPreviewState':
-        this.getPreviewState(context);
+      case 'getPreviewPreference':
+        this.getPreviewPreference(context);
+        break;
+      case 'saveViewModePreference':
+        this.saveViewModePreference(message, context);
+        break;
+      case 'getViewModePreference':
+        this.getViewModePreference(context);
         break;
       default:
         console.log('Unknown message type:', type, message);
     }
   }
 
-  private savePreviewState(message: any, context: MessageHandlerContext): void {
+  private savePreviewPreference(message: any, context: MessageHandlerContext): void {
     const { isOpen, height } = message;
     const config = vscode.workspace.getConfiguration('avro-explorer');
-    
-    // Save open state
-    config.update('previewPanelOpen', isOpen, vscode.ConfigurationTarget.Global);
-    
-    // Save height if provided
-    if (height !== undefined) {
-      config.update('previewPanelHeight', height, vscode.ConfigurationTarget.Global);
+
+    if (isOpen !== undefined) {
+      config.update('preference.previewPanelOpen', isOpen, vscode.ConfigurationTarget.Global);
     }
-    
-    console.log('Preview panel state saved:', { isOpen, height });
+    if (height !== undefined) {
+      config.update('preference.previewPanelHeight', height, vscode.ConfigurationTarget.Global);
+    }
+
+    console.log('Preview preference saved:', { isOpen, height });
   }
 
-  private getPreviewState(context: MessageHandlerContext): void {
+  private getPreviewPreference(context: MessageHandlerContext): void {
     const config = vscode.workspace.getConfiguration('avro-explorer');
-    const isOpen = config.get<boolean>('previewPanelOpen', false);
-    const height = config.get<number>('previewPanelHeight', 25);
+    const isOpen = config.get<boolean>('preference.previewPanelOpen', false);
+    const height = config.get<number>('preference.previewPanelHeight', 25);
+
     context.panel.webview.postMessage({
-      type: 'previewState',
+      type: 'previewPreference',
       isOpen,
       height,
     });
-    console.log('Preview panel state sent:', { isOpen, height });
+    console.log('Preview preference sent:', { isOpen, height });
+  }
+
+  private saveViewModePreference(message: any, context: MessageHandlerContext): void {
+    const { viewMode } = message;
+    const config = vscode.workspace.getConfiguration('avro-explorer');
+
+    if (viewMode !== undefined) {
+      config.update('preference.viewMode', viewMode, vscode.ConfigurationTarget.Global);
+    }
+
+    console.log('View mode preference saved:', viewMode);
+  }
+
+  private getViewModePreference(context: MessageHandlerContext): void {
+    const config = vscode.workspace.getConfiguration('avro-explorer');
+    const viewMode = config.get<string>('preference.viewMode', 'both');
+
+    context.panel.webview.postMessage({
+      type: 'viewModePreference',
+      viewMode,
+    });
+    console.log('View mode preference sent:', viewMode);
   }
 
   private showNotification(message: any, context: MessageHandlerContext): void {

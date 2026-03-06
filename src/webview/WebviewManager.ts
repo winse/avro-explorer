@@ -59,7 +59,7 @@ export class WebviewManager {
    */
   public createOrShowWithPanel(filePath: string, panel: vscode.WebviewPanel): void {
     console.log('createOrShowWithPanel:', filePath, 'panel:', !!panel, 'this.initialized:', this.initialized);
-    
+
     // If this is the same panel and already initialized, don't reset
     if (this.panel === panel && this.initialized) {
       console.log('Panel already initialized, revealing...');
@@ -115,6 +115,7 @@ export class WebviewManager {
       panel: this.panel,
       extensionUri: this.context.extensionUri,
       filePath,
+      context: this.context,
     };
 
     panel.webview.onDidReceiveMessage(
@@ -134,8 +135,6 @@ export class WebviewManager {
         header: cached.header,
         total: cached.total,
       });
-      // Send saved preview panel state
-      this.sendPreviewState(panel);
       this.initialized = true;
       return;
     }
@@ -184,6 +183,7 @@ export class WebviewManager {
       panel: this.panel,
       extensionUri: this.context.extensionUri,
       filePath: filePath,
+      context: this.context,
     };
 
     this.panel.webview.onDidReceiveMessage(
@@ -231,8 +231,6 @@ export class WebviewManager {
         total: data.total,
       });
 
-      // Send saved preview panel state after data
-      this.sendPreviewState(this.panel);
     } catch (error: any) {
       console.error('❌ Error loading file:', error.message);
       this.panel.webview.postMessage({
@@ -240,16 +238,6 @@ export class WebviewManager {
         message: error.message || 'Failed to load Avro file',
       });
     }
-  }
-
-  private sendPreviewState(panel: vscode.WebviewPanel): void {
-    const config = vscode.workspace.getConfiguration('avro-explorer');
-    const isOpen = config.get<boolean>('previewPanelOpen', false);
-    panel.webview.postMessage({
-      type: 'previewState',
-      isOpen,
-    });
-    console.log('Initial preview state sent:', isOpen);
   }
 
   private getHtmlContent(scriptUri: vscode.Uri, styleUri: vscode.Uri): string {

@@ -4,7 +4,7 @@
   "displayName": "Avro Explorer",
   "description": "Professional Avro file viewer with interactive data table, schema display, and export capabilities. Double-click to open .avro files directly.",
   "icon": "images/logo.png",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -48,7 +48,32 @@
           }
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Avro Explorer",
+      "properties": {
+        "avro-explorer.preference.previewPanelOpen": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the preview panel is open by default."
+        },
+        "avro-explorer.preference.previewPanelHeight": {
+          "type": "number",
+          "default": 25,
+          "description": "The default height of the preview panel in vh."
+        },
+        "avro-explorer.preference.viewMode": {
+          "type": "string",
+          "enum": [
+            "both",
+            "schema",
+            "records"
+          ],
+          "default": "both",
+          "description": "The default view mode for the explorer."
+        }
+      }
+    }
   },
   "scripts": {
     "clean": "if exist dist rmdir /s /q dist & if exist *.vsix del /q *.vsix",
